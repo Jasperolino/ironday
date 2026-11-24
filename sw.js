@@ -1,9 +1,11 @@
 // Ironday service worker: makes the app installable and lets it open offline.
 // Bump VERSION whenever you change a file so phones pick up the new version.
-const VERSION = 'ironday-v3';
+const VERSION = 'ironday-v4';
 const SHELL = [
   './',
   './index.html',
+  './guide.html',
+  './guide.js',
   './styles.css',
   './app.js',
   './firebase-config.js',

@@ -560,7 +560,7 @@ function vGate(){
   else if(phase==='setup')body=`<div class="notice warn" style="text-align:left"><b>Almost ready.</b> Add your Firebase settings to <code>firebase-config.js</code> to turn on Google Sign-In. The README explains each step.</div>${LOCALHOST?'<a class="btn big" href="?demo#today">Preview on this computer</a><p class="muted small">Preview mode saves to this browser only and skips sign-in.</p>':''}`;
   else body=`<button class="btn google big" data-act="signIn">${GOOGLE_G}<span>Continue with Google</span></button>
     ${gateError?`<p class="small" style="color:var(--bad)">${esc(gateError)}</p>`:''}
-    <p class="muted small">Your workouts, meals and goals are saved to your own private account. Other people who use Ironday can't see them.</p>${getAppHtml()}`;
+    <p class="muted small">Your workouts, meals and goals are saved to your own private account. Other people who use Ironday can't see them.</p>${getAppHtml()}<a class="small" href="guide.html" style="color:var(--accent);font-weight:700">New here? See how Ironday works</a>`;
   return`<section class="gate"><div class="gate-card"><div class="gate-char p-green">${character('lunge','a','Ironday')}</div>
     <div class="brand" style="margin:0;padding:0"><span class="brand-mark" aria-hidden="true"></span>Ironday</div>
     <h1>Your <em>fitness</em> journey starts here</h1><p class="muted">Plan your weekly split, log every set, track your food and reach your goals.</p>${body}</div></section>`;
@@ -610,6 +610,7 @@ function vAccount(){
 
   ${sec('install','Phone app','Install Ironday on Android or iPhone like a regular app.',`
     ${isStandalone()?'<div class="notice">Ironday is installed on this device.</div>':''}
+    <div class="set-row"><div><b>How Ironday works</b><p>A step-by-step guide to every part of the app.</p></div><a class="btn sm" href="guide.html">Open guide</a></div>
     <div class="set-row"><div><b>Android app</b><p>Download the Ironday app (.apk), open it, and allow installing from your browser if Android asks.</p></div><a class="btn sm primary" href="${APK_URL}" rel="noopener">Download</a></div>
     <div class="set-row"><div><b>Android, from Chrome</b><p>Or tap Install app, or open the Chrome menu (⋮) and choose <b>Install app</b>.</p></div>${installEvt?'<button class="btn sm" data-act="install">Install app</button>':''}</div>
     <div class="set-row"><div><b>iPhone and iPad</b><p>Open Ironday in Safari, tap the Share button, then <b>Add to Home Screen</b>.</p></div></div>`)}
