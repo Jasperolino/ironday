@@ -63,6 +63,14 @@ When you change files, raise `VERSION` in [`sw.js`](sw.js) so installed phones d
 
 **iPhone / iPad (Safari):** open the app's address, tap **Share**, then **Add to Home Screen**. Notifications on iPhone need iOS 16.4 or later, and the app must be opened from the Home Screen.
 
+### Android app download (.apk)
+The [`android/`](android) folder holds a small Android app: a Trusted Web Activity that opens the web app full screen in Chrome. Google Sign-In, offline support and updates all come from the website, so you rarely need to rebuild the APK.
+
+- **Download link:** <https://github.com/Jasperolino/ironday/releases/latest/download/ironday.apk>. The app shows it as **Download for Android**.
+- **Build a new version:** go to **Actions › Build Android app › Run workflow**, enter a version such as `1.0.1`, and run it. The workflow publishes the APK as a GitHub Release.
+- **Signing:** the workflow signs the APK with the key stored in two repository secrets, `ANDROID_KEYSTORE_BASE64` and `ANDROID_KEYSTORE_PASSWORD`. Without them it makes a test build with a temporary key. Phones must uninstall a test build before installing a signed one. Keep a backup of the key file. Every future update must be signed with the same key.
+- **Hiding the address bar:** Android hides Chrome's address bar only after it confirms the app belongs to the website. That needs `https://jasperolino.github.io/.well-known/assetlinks.json`, which must be served from the root of `jasperolino.github.io` (a repository named `jasperolino.github.io`). Until then the app works but shows a thin address bar at the top.
+
 ### App stores (optional, later)
 The installable web app works on both platforms without an app store. If you want store listings, open <https://www.pwabuilder.com>, enter your app's address, and download the packages it builds:
 - **Google Play:** a signed Android package. You need a Google Play developer account (one-time $25).

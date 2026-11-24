@@ -355,3 +355,6 @@ html{font-size:17px}
 .avatar.initials{display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--green),var(--blue));color:#fff;font-family:var(--f-display);font-weight:800;font-size:1.1rem}
 .avatar.initials.lg{font-size:2.2rem}
 .me-chip .avatar{width:32px;height:32px;font-size:.9rem}
+
+.get-app{margin-top:4px}
+.btn.get-app{background:var(--ink);color:var(--bg);border-color:transparent}

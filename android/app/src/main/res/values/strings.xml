@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ironday</string>
+    <string name="launch_url">https://jasperolino.github.io/ironday/</string>
+    <string name="asset_statements" translatable="false">
+        [{
+            \"relation\": [\"delegate_permission/common.handle_all_urls\"],
+            \"target\": {\"namespace\": \"web\", \"site\": \"https://jasperolino.github.io\"}
+        }]
+    </string>
+</resources>

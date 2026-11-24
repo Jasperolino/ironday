@@ -57,3 +57,12 @@ const jobs = [
   ['apple-touch-icon.png', 180, { rounded: false, k: 0.9 }]
 ];
 for (const [name, size, opt] of jobs) { fs.writeFileSync(path.join(dir, name), draw(size, opt)); console.log('wrote', name); }
+
+// Android launcher icons for the app in android/
+const res = path.join(__dirname, '..', 'android', 'app', 'src', 'main', 'res');
+for (const [density, size] of [['mdpi', 48], ['hdpi', 72], ['xhdpi', 96], ['xxhdpi', 144], ['xxxhdpi', 192]]) {
+  const d = path.join(res, 'mipmap-' + density);
+  fs.mkdirSync(d, { recursive: true });
+  fs.writeFileSync(path.join(d, 'ic_launcher.png'), draw(size, { rounded: true, k: 1 }));
+  console.log('wrote mipmap-' + density);
+}

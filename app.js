@@ -548,6 +548,10 @@ function vGoals(){
 function displayName(){return(state.profile.name||'').trim()||(me&&me.name)||''}
 function avatarSrc(){return state.profile.photo||(me&&me.avatarUrl)||''}
 function avatarImg(cls){const s=avatarSrc();return s&&/^(https:|data:image\/)/.test(s)?`<img class="avatar ${cls||''}" src="${esc(s)}" alt="" referrerpolicy="no-referrer">`:`<span class="avatar initials ${cls||''}" aria-hidden="true">${esc((displayName()||'?').trim().charAt(0).toUpperCase())}</span>`}
+const APK_URL='https://github.com/Jasperolino/ironday/releases/latest/download/ironday.apk';
+const isIOS=()=>/iPhone|iPad|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+const ANDROID_ICON='<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M17.6 9.48l1.84-3.18a.38.38 0 0 0-.66-.38l-1.86 3.22a11.5 11.5 0 0 0-9.84 0L5.22 5.92a.38.38 0 0 0-.66.38L6.4 9.48A10.8 10.8 0 0 0 1 18h22a10.8 10.8 0 0 0-5.4-8.52zM7 15.25a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5zm10 0a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5z"/></svg>';
+function getAppHtml(){if(isStandalone())return'';return isIOS()?'<p class="muted small get-app">On iPhone: tap <b>Share</b> in Safari, then <b>Add to Home Screen</b> to install Ironday.</p>':'<a class="btn big get-app" href="'+APK_URL+'" rel="noopener">'+ANDROID_ICON+'<span>Download for Android</span></a>'}
 const GOOGLE_G='<svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>';
 
 function vGate(){
@@ -556,7 +560,7 @@ function vGate(){
   else if(phase==='setup')body=`<div class="notice warn" style="text-align:left"><b>Almost ready.</b> Add your Firebase settings to <code>firebase-config.js</code> to turn on Google Sign-In. The README explains each step.</div>${LOCALHOST?'<a class="btn big" href="?demo#today">Preview on this computer</a><p class="muted small">Preview mode saves to this browser only and skips sign-in.</p>':''}`;
   else body=`<button class="btn google big" data-act="signIn">${GOOGLE_G}<span>Continue with Google</span></button>
     ${gateError?`<p class="small" style="color:var(--bad)">${esc(gateError)}</p>`:''}
-    <p class="muted small">Your workouts, meals and goals are saved to your own private account. Other people who use Ironday can't see them.</p>`;
+    <p class="muted small">Your workouts, meals and goals are saved to your own private account. Other people who use Ironday can't see them.</p>${getAppHtml()}`;
   return`<section class="gate"><div class="gate-card"><div class="gate-char p-green">${character('lunge','a','Ironday')}</div>
     <div class="brand" style="margin:0;padding:0"><span class="brand-mark" aria-hidden="true"></span>Ironday</div>
     <h1>Your <em>fitness</em> journey starts here</h1><p class="muted">Plan your weekly split, log every set, track your food and reach your goals.</p>${body}</div></section>`;
@@ -606,7 +610,8 @@ function vAccount(){
 
   ${sec('install','Phone app','Install Ironday on Android or iPhone like a regular app.',`
     ${isStandalone()?'<div class="notice">Ironday is installed on this device.</div>':''}
-    <div class="set-row"><div><b>Android</b><p>Tap Install app, or open the Chrome menu (⋮) and choose <b>Install app</b> or <b>Add to Home screen</b>.</p></div>${installEvt?'<button class="btn sm primary" data-act="install">Install app</button>':''}</div>
+    <div class="set-row"><div><b>Android app</b><p>Download the Ironday app (.apk), open it, and allow installing from your browser if Android asks.</p></div><a class="btn sm primary" href="${APK_URL}" rel="noopener">Download</a></div>
+    <div class="set-row"><div><b>Android, from Chrome</b><p>Or tap Install app, or open the Chrome menu (⋮) and choose <b>Install app</b>.</p></div>${installEvt?'<button class="btn sm" data-act="install">Install app</button>':''}</div>
     <div class="set-row"><div><b>iPhone and iPad</b><p>Open Ironday in Safari, tap the Share button, then <b>Add to Home Screen</b>.</p></div></div>`)}
 
   ${sec('sync','Sync & backup','Every change is saved to your account and works offline.',`
