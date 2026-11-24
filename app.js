@@ -186,6 +186,7 @@ function friendlyAuthError(e){
   if(c==='auth/unauthorized-domain')return'This web address isn’t allowed to sign in yet. Add it under Authentication › Settings › Authorized domains in Firebase.';
   if(c==='auth/network-request-failed')return'No connection. Check your internet and try again.';
   if(c==='auth/popup-blocked')return'Your browser blocked the sign-in window. Allow pop-ups for this site and try again.';
+  if(c==='auth/configuration-not-found'||c==='auth/internal-error')return'Google sign-in isn’t switched on for Ironday yet. In Firebase, open Authentication, click Get started, then enable Google.';
   if(c==='auth/operation-not-allowed')return'Google sign-in is turned off for this app. Turn it on in Firebase › Authentication › Sign-in method.';
   if(c==='auth/user-mismatch')return'Choose the same Google account you’re signed in with.';
   return'Sign-in didn’t finish. Please try again.';
