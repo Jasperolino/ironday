@@ -160,7 +160,7 @@ function prune(){
 /* ---------- accounts & storage: Google Sign-In (Firebase Auth) + one private Firestore document per user ---------- */
 const CONFIGURED=!!(firebaseConfig&&firebaseConfig.apiKey&&firebaseConfig.projectId);
 const LOCALHOST=/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
-const DEMO=!CONFIGURED&&LOCALHOST&&/[?&]demo\b/.test(location.search);
+const DEMO=LOCALHOST&&/[?&]demo\b/.test(location.search);
 const SHEETS_SCOPE='https://www.googleapis.com/auth/drive.file';
 let fb=null,state=freshState(),me=null,uidv=null,phase='loading',gateError='',saveTimer=null,lastSync=0,started=false,pendingImport=null,pendingJump=null,installEvt=null;
 let syncMsg='Connecting…',syncOn=false;
@@ -289,6 +289,8 @@ function refreshSheetUI(){const l=$('#sheetLine');if(l)l.textContent=sheetLine()
 
 /* ---------- derived ---------- */
 function effDay(s){return state.overrides[s]||state.plan[dkOf(s)]}
+const SHORT={'shoulders-triceps':'Shoulders + Tri','chest-triceps':'Chest + Tri','chest-biceps':'Chest + Bi','back-biceps':'Back + Bi',legs:'Legs',arms:'Arms',full:'Full body','cardio-core':'Cardio + Core',rest:'Rest'};
+function shortName(day){return SHORT[day.split]||dayName(day)}
 function dayName(day){return day.split==='custom'?(day.name||'Custom workout'):SPLIT[day.split].name}
 function splitOf(day){return SPLIT[day.split]||SPLIT.custom}
 function sessionsOn(s){return state.sessions.filter(x=>x.date===s)}
@@ -399,7 +401,7 @@ function vToday(){
   const monday=mondayIso(t);
   const week=DAYS.map((d,i)=>{const k=addDays(monday,i),dd=effDay(k),s=splitOf(dd),did=sessionsOn(k).length>0;
     const st=did?'<span class="st" style="color:var(--good)">Done</span>':k===t?'<span class="st" style="color:var(--accent)">Today</span>':dd.split==='rest'?'<span class="st muted">Rest</span>':k<t?'<span class="st" style="color:var(--bad)">Missed</span>':`<span class="st muted">${dd.remind?fmtTime(dd.time):''}</span>`;
-    return`<button class="wd p-${s.plate}${k===t?' today':''}" data-act="openDay" data-dk="${d}" aria-label="${DAY_NAMES[d]}: ${esc(dayName(dd))}"><span class="d">${d}</span><span class="s">${esc(dayName(dd))}</span>${st}</button>`}).join('');
+    return`<button class="wd p-${s.plate}${k===t?' today':''}" data-act="openDay" data-dk="${d}" aria-label="${DAY_NAMES[d]}: ${esc(dayName(dd))}"><span class="d">${d}</span><span class="s">${esc(shortName(dd))}</span>${st}</button>`}).join('');
   const sub=state.active?'Your workout is in progress.':done.length?'Great work today. Recover well.':day.split==='rest'?'Rest day. Let your muscles rebuild.':'Ready to crush your goals?';
   return`
   <div class="topbar">
@@ -869,6 +871,7 @@ function render(){
   if(r==='alerts'&&state.inbox.some(i=>!i.read)){setTimeout(()=>{if(route()==='alerts'){state.inbox.forEach(i=>i.read=true);save();updateUnread()}},2500)}
   if(r==='account'&&pendingJump){const id=pendingJump;pendingJump=null;setTimeout(()=>{const el=document.getElementById('s-'+id);el&&el.scrollIntoView({block:'start'})},30)}
   setSync(syncMsg,syncOn);renderMeChip();updateUnread();
+  const wk=document.querySelector('.week'),td=wk&&wk.querySelector('.wd.today');if(wk&&td&&wk.scrollWidth>wk.clientWidth)wk.scrollLeft=Math.max(0,td.offsetLeft-wk.offsetLeft-(wk.clientWidth-td.offsetWidth)/2);
 }
 let lastRoute=route();
 window.addEventListener('hashchange',()=>{const r=route();if(r!==lastRoute){window.scrollTo(0,0);lastRoute=r}render()});
